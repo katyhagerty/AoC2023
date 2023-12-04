@@ -91,7 +91,7 @@ def part1(data):
     
     return part_no
 
-def find_no(line, i):
+def find_no(line, i, line_no):
     matches = re.finditer('\d+', line)
     for m in matches:
         start = m.span()[0]
@@ -99,7 +99,7 @@ def find_no(line, i):
         
         if i >= start and i < end:
             no = m.group(0)
-            s = m.span()
+            s = (line_no, start, end)
     return no, s
     
 
@@ -119,7 +119,7 @@ def part2(data):
             adjacent = dict()
             for r,c in [(i,j) for i in rows for j in columns]:
                 if data[r][c] in '0123456789':
-                    no, s = find_no(data[r], c)
+                    no, s = find_no(data[r], c, r)
                     adjacent[s] = int(no)
             
             if len(adjacent) == 2:
@@ -150,7 +150,7 @@ t=['467..114..',
  '...$.*....',
  '.664.598..']
 # answer = part1(data)
-answer2 = part2(t)
+answer2 = part2(data)
             
 
                 
