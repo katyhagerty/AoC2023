@@ -35,14 +35,17 @@ def part2(data):
         }
         
     for line in data:
-        matches = re.findall(f'\d|{"|".join(d.keys())}', line)
-        first = d[matches[0]] if matches[0] in d.keys() else matches[0]
-        last = d[matches[-1]] if matches[-1] in d.keys() else matches[-1]
+        first = re.search(f'\d|{"|".join(d.keys())}', line).group(0)
+        first = d.get(first, first)
+        
+        rev = [i[::-1] for i in d.keys()]
+        last = re.search(f'\d|{"|".join(rev)}', line[::-1]).group(0)
+        last = d.get(last[::-1], last)
         
         total += int(f'{first}{last}')
         
     return total
 
-part2(data)
+total =part2(data)
 
         
