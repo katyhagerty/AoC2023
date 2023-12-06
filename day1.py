@@ -11,7 +11,7 @@ with open('day1_input.txt', 'r') as f:
     data = f.readlines()
     f.close()
 
-def soln(data):
+def part1(data):
     total = 0        
     for line in data:
         first = re.search('\d', line).group(0)
