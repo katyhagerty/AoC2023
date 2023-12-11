@@ -64,8 +64,11 @@ def search_map_range(data, ra):
     # data  = [i for i in data if i[1] >= ra[0] or i[1] + i[2] > ra[0]]
     start = ra[0]
     length = ra[0] + ra[1]
-    # filtered_data = [i for i in data if len(set(range(i[1], i[1] + i[2])).intersection(set(range(start,length)))) > 0]
-    filtered_data= [i for i in data if (i[1] + i[2]) > length >= i[1] or i[1] <= start < i[1] + i[2]]
+    # filtered_data_b = [i for i in data if len(set(range(i[1], i[1] + i[2])).intersection(set(range(start,length)))) > 0]
+    filtered_data= [i for i in data if start <= i[1] < length or start <= i[1] + i[2] < length or i[1] <= start < i[1] +  i[2] or i[1] <= length < i[1] + i[2]]
+    
+    # if filtered_data_b != filtered_data:
+        # print('error')
     # if filtered_data not in new_ranges:
         # new_ranges += filtered_data
     
@@ -219,7 +222,7 @@ def part2():
     # min_loc = find_smallest_loc(loc, start)
         
     #     answers.append(min_loc)
-    return answer
+    return locs
 
 answer2 = part2()
 
