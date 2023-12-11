@@ -93,8 +93,8 @@ class hand:
         self.joker = True if 'J' in cards else False
         self.cards = self.wildcard()
         joker_cards = self.cards
-        self.card_values = [part2_s[i] for i in orig_cards]
-        self.joker_values = [part2_s[i] for i in joker_cards]
+        self.card_values = [part2_s[i] for i in joker_cards]
+        self.joker_values = [part2_s[i] for i in orig_cards]
         self.counts = {i: joker_cards.count(i) for i in joker_cards}
         self.type = ''
     
@@ -104,13 +104,16 @@ class hand:
         
         qty = 0
         best_card= []
-        for card in d:
+        not_jokers = [i for i in d if i != 'J']
+        for card in not_jokers:
             if d[card] == qty:
                 qty = d[card]
                 best_card.append(card)
             elif d[card] > qty:
                 qty = d[card]
                 best_card = [card]
+        if len(best_card) == 0:
+            best_card.append('A')                
         best_card.sort(key = lambda x: strength2(x))
         orig_cards = orig_cards.replace('J', best_card[-1])
         
