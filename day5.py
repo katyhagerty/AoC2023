@@ -57,6 +57,7 @@ def search_map_range(data, ra):
     # soil seed len
     
     data = [[int(j) for j in i.split()] for i in data]
+    data.sort(key = lambda x:x[1])
     total_ranges = []
     # for ra in ranges:
     new_ranges=[]
@@ -94,6 +95,7 @@ def search_map_range(data, ra):
         # dest in starting point for next map
         filtered_data[i] = [dest, r]
     
+    # filtered_data = [[i[0], i[2]] for i in filtered_data]
     if len(filtered_data) == 0:
         filtered_data.append(ra)
         
