@@ -12,16 +12,38 @@ with open('day12_input.txt', 'r') as f:
     # data = [[j for j in i] for i in data]
     f.close()
     
-def part1():
-    for line in data:
-        field, values = line.split()
-        no_springs = sum(values)
-        known_springs = field.count('#')
-        remaining_springs = no_springs - known_springs
-        
-        unknown = field.count('?')
-        char = '#' * remaining_springs + '.' * unknown - remaining_springs
-        patterns = list(set([''.join(i) for i in itertools.permutations(char, r = unknown)]))
-        
+def solve(field,values, answer):
+
     
+    if '?' not in field:
+        result = [len(i) for i in field.split('.') if i != '']
+        if result == values:
+            # print(field)
+            answer +=1
+
+        return answer
+    
+    for i in ['.', '#']:
+
+        x = field.find('?')
+        field = field.replace('?', i, 1)
+
+        answer = solve(field,values,answer)
+        
+        # undo
+        field = field[0:x] + '?' + field[x+1:]
+    
+    return answer    
+
+def part1():
+    answers = []
+    for line in data:
+        field,values = line.split()
+        values = values.split(',')
+        values = [int(i) for i in values]
+        answer = 0
+        answers.append(solve(field,values,answer))
+    
+    return answers
+
 answer1 = part1()
