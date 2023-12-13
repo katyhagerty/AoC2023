@@ -82,27 +82,55 @@ def search_map_range(data, ra):
             r -= start - source
             source = start
         # gaps
-        elif source > start:
-            filtered_data.append([start, source - start])
+        # elif source > start:
+            # filtered_data.append([start, source - start])
             
         if r > ra[1]:
-            r = ra[1]
+            r = ra[0] + ra[1] - source
         # gaps
-        elif r < ra[1]:
-            filtered_data.append([source + r , ra[1] - r])
+        # elif r < ra[1]:
+            # filtered_data.append([source + r , ra[1] - r])
         
         # only need dest and r for next map
         # dest in starting point for next map
-        filtered_data[i] = [dest, r]
+        filtered_data[i] = [dest, source, r]
     
     # filtered_data = [[i[0], i[2]] for i in filtered_data]
-    if len(filtered_data) == 0:
-        filtered_data.append(ra)
+    # if len(filtered_data) == 0:
+        # filtered_data.append(ra)
         
     # find gaps
+    # find ranges in ra that are included in filtered_data
+    # included = [[i[1], i[2]] for i in filtered_data]
+    # gaps = []
     
+    # find gaps
+    # convert ra from dest, source, range to source, end
+    convert_ra = ra.copy()
+    # convert_ra.pop(0)
+    convert_ra[1] = convert_ra[0] + convert_ra[1]
     
-    return filtered_data
+    # do the same for filtered_data
+    convert_filtered = [i[1::] for i in filtered_data]
+    for i,v in enumerate(convert_filtered):
+        end = sum(convert_filtered[i][0::])
+        convert_filtered[i][1] = end
+    
+    flat = [j for i in convert_filtered for j in i]
+    gaps = convert_ra + flat        
+    gaps.sort()
+    gaps = [i for i in gaps if gaps.count(i) == 1]    
+    gaps_split = []
+    for i in range(len(gaps) // 2):
+        gaps_split.append([gaps[i * 2], gaps[i * 2 + 1] - gaps[i * 2]])
+
+    # for i,v in enumerate(gaps_split):
+    #     gaps_split[i].insert(0, gaps_split[i][0])
+    #     length =  gaps_split[i][-1] - gaps_split[i][1]
+    #     gaps_split[i][-1] = length
+    filtered_data = [[i[0],i[2]] for i in filtered_data]
+    
+    return filtered_data + gaps_split
     # # find gaps in new_ranges
     # new_ranges.sort(key = lambda x: x[1])
     # if len(new_ranges) > 1:
@@ -176,7 +204,7 @@ def search_map_range(data, ra):
             
     # # return value
     # total_ranges.sort()
-    return total_ranges
+    # return total_ranges
 
 def find_smallest_loc(loc, start):
     loc.sort(key = lambda x : x[1])
@@ -224,7 +252,7 @@ def part2():
     # min_loc = find_smallest_loc(loc, start)
         
     #     answers.append(min_loc)
-    return locs
+    return answer
 
 answer2 = part2()
 
