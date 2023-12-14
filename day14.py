@@ -18,8 +18,8 @@ def part1():
     
     splits = [list(i.split('#')) for i in transposed]
     tilted_positions = [sorted(i) for i in splits]
-    tilted_string = [''.join() for i in tilted_positions]
-    ind_values = [j.span()[1] for i in tilted_string for j in re.findall('O',i)]
+    tilted_string = ['#'.join(i) for i in tilted_positions]
+    ind_values = [j.span()[1] + 1 for i in tilted_string for j in re.finditer('O',i)]
     
     return sum(ind_values)
     # for i in tilted_string:
